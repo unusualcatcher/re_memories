@@ -1,0 +1,52 @@
+{% extends 'memories/base.html' %}
+
+{% block title %}Memories{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #ffffff;
+        color: #171615;
+    }
+
+    .memory-card {
+        background-color: #171615;
+        color: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .memory-card .memory-title {
+        font-size: 2rem;
+        font-weight: bold;
+        text-align: center;
+        text-decoration: underline;
+    }
+
+    .memory-card .memory-content {
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    .memory-card .date-posted {
+        font-size: 0.875rem;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+</style>
+<div class="container">
+    <div class="row">
+        {% for memory in memories %}
+            <div class="col-md-8 offset-md-2">
+                <div class="memory-card">
+                    <div class="memory-title">{{ memory.title }}</div>
+                    <p class="date-posted">Date posted: {{ memory.date_posted }}</p>
+                    <div class="memory-content">{{ memory.content }}</div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'memories/base.html' %}
+
+{% block title %}Create Memory{% endblock %}
+
+{% block content %}
+<div class="d-flex" style="height: 100vh;">
+    <!-- Left Side with Colored Background (Visible only on larger screens) -->
+    <div class="d-none d-md-flex text-white flex-column p-4" style="width: 40%; background-color: #949EFF; border-top-left-radius: 15px; border-bottom-left-radius: 15px;">
+        <!-- Top Left Content -->
+        <div class="mb-4">
+            <h3>Re:Memories</h3>
+            <small><i>Remember, Meet, Relive</i></small>
+        </div>
+        
+        <!-- Centered Main Slogan -->
+        <div class="d-flex flex-grow-1 justify-content-center align-items-center">
+            <h1 class="text-center" style="font-size: 2rem; font-weight: bold;">Create and cherish your memories with us!</h1>
+        </div>
+    </div>
+
+    <!-- Right Side with Create Memory Form -->
+    <div class="container mt-5" style="width: 100%; max-width: 500px;">
+        <h2 class="mb-4">Create a New Memory</h2>
+
+        <!-- Django Messages (if any) -->
+        <div class="mb-4">
+            {% if messages %}
+                <div class="alert alert-info">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="title">Title:</label>
+                <input type="text" name="title" id="title" class="form-control" required>
+            </div>
+            <div class="form-group mt-3">
+                <label for="memory">Your memory:</label>
+                <textarea name="memory" id="memory" rows="10" class="form-control" required></textarea>
+            </div>
+            <input type="hidden" id="hidden-time" name="current_time" value="">
+            <button type="submit" name="submit" id="submit" class="btn btn-primary mt-3" style="background-color: #5352EC; width: 100%; max-width: 300px; border-radius: 8px; text-align: center; display: block; margin: 0 auto;">
+                Submit
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function getCurrentTime() {
+        const now = new Date();
+        const options = { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone };
+        const formattedTime = now.toLocaleString('en-US', options);
+        return formattedTime;
+    }
+    
+    // Get the current time
+    const currentTime = getCurrentTime();
+    console.log(currentTime);
+    // Find the hidden input field
+    const hiddenInput = document.getElementById('hidden-time');
+
+    // Set the value of the hidden input field
+    hiddenInput.value = currentTime;
+</script>
+{% endblock %}

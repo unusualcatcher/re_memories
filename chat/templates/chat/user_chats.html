@@ -1,0 +1,80 @@
+{% extends 'memories/base.html' %}
+
+{% block title %}Your Chats{% endblock %}
+
+{% block content %}
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .chat-group-card {
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+            margin-bottom: 15px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .chat-group-card:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .chat-group-card .card-body {
+            padding: 15px;
+        }
+        .chat-group-card .card-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #343a40;
+            margin-left: 10px;
+        }
+        .chat-group-card .card-text {
+            font-size: 1rem;
+            color: #495057;
+        }
+        .chat-group-card .btn {
+            margin-top: 10px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+        }
+        .chat-group-card .btn:hover {
+            background-color: #0056b3;
+        }
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 0.5rem;
+        }
+        .profile-pic-container {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+
+    <div class="container">
+        <h1 class="text-center mb-4" style="text-decoration: underline;">Your Chat Groups</h1>
+        <div class="row">
+            {% for chat_group, members in chat_data %}
+                {% for member in members %}
+                    {% if member != current_user %}
+                        <div class="col-md-4">
+                            <div class="card chat-group-card">
+                                <div class="card-body">
+                                    <div class="profile-pic-container">
+                                        <img src="{{ member.profile.pfp.url }}" alt="{{ member.username }}" class="profile-pic">
+                                        <h5 class="card-title">{{ member.username }}</h5>
+                                    </div>
+                                    <a href="{% url 'chatroom' chat_group.group_name %}" class="btn btn-primary">Go to Chat</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

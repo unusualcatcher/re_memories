@@ -1,0 +1,140 @@
+{% extends 'memories/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<style>
+    .main-container {
+        display: flex;
+        flex-direction: row;
+        gap: 0; /* Remove gap between the sections */
+        min-height: 80vh; /* Ensure the sections are long, adjust as needed */
+        margin-bottom: 20px; /* Space between the main container and the about section */
+    }
+    
+    .section {
+        padding: 20px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: 100%; /* Ensure it stretches to fill the container */
+    }
+    
+    .left-section {
+        background-color: #16222E;
+        color: #ffffff;
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
+    }
+
+    .right-section {
+        background-color: black;
+        color: #ffffff;
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+    }
+    
+    .about-section {
+        background-color: #ffffff;
+        color: #171615;
+        padding: 20px;
+    }
+    
+    #left-div, #right-div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding: 30px; /* Increased padding inside the divs */
+    }
+    
+    h1 {
+        font-size: 2.9rem; /* Increased font size for headings */
+        font-weight: bold;
+        text-shadow: 2px 2px 4px rgba(25, 16, 16, 0.5);
+        margin-bottom: 15px; /* Increased margin below headings */
+    }
+    
+    p {
+        font-size: 1rem;
+        line-height: 1.5;
+        margin-bottom: 20px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        padding: 10px 20px;
+        color: #ffffff;
+        border-radius: 5px;
+        font-weight: bold;
+        text-transform: uppercase;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    /* Style for oval button */
+    .btn-chat {
+        background-color: #fafafa;
+        border: 2px solid black; /* Black outline inside the button */
+        color: black;
+        border-radius: 50px; /* Makes the button oval */
+        width: 150px; /* Adjust width as needed */
+        height: 50px; /* Adjust height to make it oval */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0; /* Remove default padding */
+        font-size: 1rem; /* Adjust font size if needed */
+    }
+
+    .btn-chat:hover {
+        background-color: #e0e0e0; /* Slightly darker background on hover */
+    }
+
+    @media (max-width: 768px) {
+        .main-container {
+            flex-direction: column;
+        }
+    }
+</style>
+
+<div class="main-container">
+    <div class="section left-section">
+        <div id="left-div">
+        <h1>Welcome to Re:Memories</h1>
+        <p>We're dedicated to helping you cherish and reconnect with your past. Our platform allows you to journal your memories and revisit them whenever you wish. Your shared experiences can also be reviewed by medical professionals, who can identify patterns and detect early signs of memory-related conditions, ensuring your well-being. Our unique matching feature connects you with others who have similar memories and experiences, fostering a community where shared stories can be relived and celebrated.</p>
+        </div>
+    </div>
+
+    <div class="section right-section">
+        <div id="right-div">
+        <h1>Meet New People!</h1>
+        <p style="margin-left: 15px;">Click on the button below to start a chat with a user with similar memories and experiences as you!</p>
+        <form action="" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-chat">Start Chat!</button>
+        </form>
+        </div>
+    </div>
+</div>
+
+<div class="about-section">
+    <h1>About Re:Memories</h1>
+    <p>At Re:Memories, we believe that every memory is a precious part of who we are. Our mission is to help you preserve and relive these cherished moments, while also supporting your overall well-being. Here’s how we make that possible:
+        <br><br>
+        <strong>Journaling Your Memories:</strong> Our intuitive platform allows you to document your memories in detail, creating a personal archive that you can revisit anytime. Whether it's a fond recollection or a significant life event, your memories are safely stored and easily accessible.
+        <br><br>
+        <strong>Medical Insights:</strong> By providing a way for medical professionals to review your memory journals, we offer an additional layer of support. These insights can help identify patterns and early signs of memory-related conditions, giving you and your healthcare provider valuable information to support your health.
+        <br><br>
+        <strong>Connecting with Others:</strong> Discover people who share similar memories and experiences through our unique matching system. Whether you’re looking to find like-minded individuals or simply want to engage in meaningful conversations, our platform helps you build connections based on shared experiences.
+        <br><br>
+        At Re:Memories, we’re more than just a memory-keeping service; we’re a community dedicated to celebrating and understanding the stories that shape our lives. Join us in exploring the past, connecting with others, and taking proactive steps towards your memory health.
+    </p>
+</div>
+{% endblock %}

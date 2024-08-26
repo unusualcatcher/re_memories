@@ -1,0 +1,204 @@
+{% extends "memories/base.html" %}
+
+{% block title %}Chatroom - {{ other_user.username }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid chatroom-container" style="background: none; max-width: 100%;">
+    <!-- Chat Header with Other User's Name -->
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10 col-xl-8 p-3 text-center" style="border: 1px solid #ddd; background-color: #fff;">
+            <h3>{{ other_user.username }}</h3>
+        </div>
+    </div>
+
+    <!-- Chat Body -->
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10 col-xl-8 p-0">
+            <div id="chat-messages" class="chat-messages" style="height: 60vh; overflow-y: auto; background-color: #e9ecef; border-radius: 5px 5px 0 0;">
+                <!-- Messages will be loaded here -->
+            </div>
+            <form action="" method="post" id="chat-message-form" class="d-flex" style="background-color: #f8f9fa; border-radius: 0 0 5px 5px; margin: 0;">
+                <input type="text" id="message-input" class="form-control mr-2" placeholder="Type your message" style="border-radius: 20px; border: 1px solid #ddd;">
+                <button type="submit" id="send-message-button" class="btn btn-primary" style="border-radius: 20px; border: 1px solid #007bff;">Send</button>
+                <input type="hidden" id="hidden-time" name="current_time">
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .chatroom-container {
+        background-color: #f8f9fa;
+        min-height: 100vh;
+    }
+    .message {
+        margin-bottom: 10px;
+        display: flex;
+        align-items: flex-end;
+        position: relative;
+    }
+    .message.sent {
+        justify-content: flex-end;
+        flex-direction: row-reverse; /* Adjust direction for sent messages */
+    }
+    .message-received {
+        justify-content: flex-start;
+        flex-direction: row; /* Default direction for received messages */
+    }
+    .message-content {
+        max-width: 70%;
+        border-radius: 15px;
+        padding: 15px; /* Increased padding for larger bubbles */
+        position: relative;
+        font-size: 1rem; /* Adjusted font size */
+        margin: 0; /* Reset margin to allow proper alignment */
+    }
+    .message-content.sent {
+        background-color: #007bff;
+        color: white;
+    }
+    .message-content.received {
+        background-color: #ffffff;
+        color: black;
+    }
+    .message-text {
+        font-size: 1rem;
+    }
+    .message-time {
+        font-size: 0.7rem; /* Smaller font size */
+        color: #6c757d; /* Dark gray color for received messages */
+        margin-bottom: 4px; /* Margin for spacing between date and message */
+        text-align: center;
+    }
+    .message-time-wrapper {
+        text-align: center;
+        margin-bottom: 4px; /* Margin below the time */
+    }
+    .message.sent .message-time {
+        color: #f1f1f1; /* Slightly whitish color for sent messages */
+    }
+    .profile-picture {
+        width: 40px; /* Increased size */
+        height: 40px; /* Increased size */
+        border-radius: 50%;
+        margin: 0 10px;
+    }
+    .message.sent .profile-picture {
+        order: 1; /* Move profile picture to the right */
+        margin-left: 10px;
+    }
+    .message-received .profile-picture {
+        order: -1; /* Move profile picture to the left */
+        margin-right: 10px;
+    }
+    .message.sent .message-content {
+        margin-left: 0; /* Reset margin for proper alignment */
+    }
+    .message-received .message-content {
+        margin-right: 0; /* Reset margin for proper alignment */
+    }
+    @media (min-width: 768px) {
+  .container-fluid.chatroom-container {
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+</style>
+
+<script>
+    const loggedInUsername = '{{ user.username }}';
+    const otherUsername = '{{ other_user.username }}';
+
+    function getCurrentTime() {
+        const now = new Date();
+        const options = {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            hour12: false
+        };
+
+        const formattedTime = now.toLocaleString('en-US', options).replace(',', '');
+        return formattedTime;
+    }
+
+    const groupName = '{{ group_name }}';
+    const wsUrl = 'ws://' + window.location.host + '/ws/chat/' + groupName + '/';
+    const ws = new WebSocket(wsUrl);
+
+    ws.onopen = () => {
+        console.log('WebSocket connection opened');
+    };
+
+    ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        const chatMessagesElement = document.getElementById('chat-messages');
+
+        // Check if the message was sent by the logged-in user or the other user
+        const isSentByLoggedInUser = data.username === loggedInUsername;
+
+        // Construct the HTML for the message
+        const messageHtml = `
+            <div class="message ${isSentByLoggedInUser ? 'sent' : 'message-received'}">
+                ${isSentByLoggedInUser ? `
+                    <div class="message-content sent">
+                        <div class="message-time-wrapper">
+                            <div class="message-time">${data.created}</div>
+                        </div>
+                        <div class="message-text">
+                            ${data.message}
+                        </div>
+                    </div>
+                    <a href="/view-profile/${data.username}">
+                        <img src="${data.pfp}" alt="Profile Picture" class="profile-picture">
+                    </a>
+                ` : `
+                    <a href="/view-profile/${data.username}">
+                        <img src="${data.pfp}" alt="Profile Picture" class="profile-picture">
+                    </a>
+                    <div class="message-content received">
+                        <div class="message-time-wrapper">
+                            <div class="message-time">${data.created}</div>
+                        </div>
+                        <div class="message-text">
+                            ${data.message}
+                        </div>
+                    </div>
+                `}
+            </div>
+        `;
+
+        // Append the message to the chat
+        chatMessagesElement.innerHTML += messageHtml;
+
+        // Scroll to the bottom of the chat
+        chatMessagesElement.scrollTop = chatMessagesElement.scrollHeight;
+    };
+
+    ws.onclose = () => {
+        console.log('WebSocket connection closed');
+    };
+
+    const sendMessageButton = document.getElementById('send-message-button');
+    const messageInput = document.getElementById('message-input');
+    const hiddenInput = document.getElementById('hidden-time');
+
+    sendMessageButton.addEventListener('click', (event) => {
+        event.preventDefault();
+
+        const message = messageInput.value;
+        if (message) {
+            const currentTime = getCurrentTime();
+            hiddenInput.value = currentTime;
+
+            console.log(`Sending message at ${currentTime}: ${message}`);
+
+            ws.send(JSON.stringify({ message: message, current_time: currentTime }));
+            messageInput.value = '';
+        }
+    });
+</script>
+{% endblock %}

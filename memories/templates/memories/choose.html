@@ -1,0 +1,53 @@
+{% extends "memories/base.html" %}
+
+{% block title %}Select Memory{% endblock %}
+
+{% block content %}
+<div class="d-flex" style="height: 100vh;">
+    <!-- Left Side with Colored Background (Visible only on larger screens) -->
+    <div class="d-none d-md-flex text-white flex-column p-4" style="width: 40%; background-color: #949EFF; border-top-left-radius: 15px; border-bottom-left-radius: 15px;">
+        <!-- Top Left Content -->
+        <div class="mb-4">
+            <h3>Re:Memories</h3>
+            <small><i>Remember, Meet, Relive</i></small>
+        </div>
+        
+        <!-- Centered Main Slogan -->
+        <div class="d-flex flex-grow-1 justify-content-center align-items-center">
+            <h1 class="text-center" style="font-size: 2.5rem; font-weight: bold;">Select a memory and relive it with someone!</h1>
+        </div>
+    </div>
+
+    <!-- Right Side with Select Form -->
+    <div class="container mt-5" style="width: 100%; max-width: 500px;">
+        <h2 class="mb-4 text-center">Select a Memory:</h2>
+
+        <!-- Django Messages -->
+        <div class="mb-4">
+            {% if memory_found_err %}
+                <div class="alert alert-danger">
+                    {{ memory_found_err }}
+                </div>
+            {% endif %}
+        </div>
+
+        <form action="" method="post">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="memory">Choose a memory to use for matching with other users:</label>
+                <select name="memory" id="memory" class="form-control" required>
+                    {% for memory in memories %}
+                        <option value="{{ forloop.counter0 }}">{{ memory.title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary mt-3" style="background-color: #5352EC; width: 100%; max-width: 300px; border-radius: 8px; text-align: center; display: block; margin: 0 auto;">
+                Submit
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

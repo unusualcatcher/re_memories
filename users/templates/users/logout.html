@@ -1,0 +1,32 @@
+{% extends "memories/base.html" %}
+
+{% block title %}Logout{% endblock %}
+
+{% block content %}
+<div class="d-flex" style="height: 100vh;">
+    <!-- Left Side with Colored Background (Visible only on larger screens) -->
+    <div class="d-none d-md-flex text-white flex-column p-4" style="width: 40%; background-color: #949EFF; border-top-left-radius: 15px; border-bottom-left-radius: 15px;">
+        <!-- Top Left Content -->
+        <div class="mb-4">
+            <h3>Re:Memories</h3>
+            <small><i>Remember, Meet, Relive</i></small>
+        </div>
+        
+        <!-- Centered Main Slogan -->
+        <div class="d-flex flex-grow-1 justify-content-center align-items-center">
+            <h1 class="text-center" style="font-size: 3rem; font-weight: bold;">Remember your memories, Meet new people, Relive your memories!</h1>
+        </div>
+    </div>
+
+    <!-- Right Side with Logout Message -->
+    <div class="container mt-5" style="width: 100%; max-width: 500px;">
+        <h2 class="mb-4">Logout</h2>
+
+        <p>You have been logged out.</p>
+
+        <a href="{% url 'login' %}" class="btn btn-primary mt-3" style="background-color: #5352EC; width: 100%; max-width: 300px; border-radius: 8px; text-align: center; display: block; margin: 0 auto;">
+            Go to Login
+        </a>
+    </div>
+</div>
+{% endblock %}

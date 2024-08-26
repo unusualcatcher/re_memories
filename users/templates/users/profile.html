@@ -1,0 +1,93 @@
+{% extends "memories/base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4 text-center">
+            <!-- Profile Picture -->
+            <img src="{{ profile.pfp.url }}" alt="Profile Picture" class="img-fluid rounded-circle mb-3"
+                style="width: 150px; height: 150px; object-fit: cover;">
+            <!-- Update Profile Link -->
+        </div>
+        <div class="col-md-8">
+            <!-- User Details -->
+            <h2>{{ profile.user.username }}</h2>
+            <p class="lead">Welcome to your profile page!</p>
+            <ul class="list-group mb-4">
+                <li class="list-group-item"><strong>Username:</strong> {{ profile.user.username }}</li>
+                <li class="list-group-item"><strong>Email:</strong> {{ profile.user.email }}</li>
+            </ul>
+        </div>
+    </div>
+    <!-- Memories Section -->
+    <div class="row">
+        {% for memory in memories %}
+            <div class="col-md-8 offset-md-2 mb-4">
+                <div class="memory-card p-4">
+                    <div class="memory-title mb-2">{{ memory.title }}</div>
+                    <p class="date-posted mb-3">Date posted: {{ memory.date_posted }}</p>
+                    <div class="memory-content">{{ memory.content }}</div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-md-8 offset-md-2">
+                <div class="alert alert-info text-center">
+                    No memories to display.
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div style="display: flex; justify-content: center; align-items: center;">
+        <a href="{% url 'profile_update' %}" class="btn btn-secondary mt-2">Update your profile</a>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #ffffff;
+        color: #171615;
+    }
+
+    .memory-card {
+        background-color: #171615;
+        color: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .memory-card .memory-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-align: center;
+        text-decoration: underline;
+    }
+
+    .memory-card .memory-content {
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    .memory-card .date-posted {
+        font-size: 0.875rem;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        color: #ffffff;
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+        border-color: #545b62;
+    }
+</style>
+{% endblock %}
