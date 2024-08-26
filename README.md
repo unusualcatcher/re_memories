@@ -23,7 +23,7 @@ To get started with Re:Memories, follow the instructions below.
 1. **Download the ZIP file**: 
    - Download the project ZIP file from the GitHub repository and extract it to your desired location.
 
-2. **Navigate to the project directory**:
+2. **Navigate to the directory with the project directory**:
 3. ```
    cd path/to/extracted-folder
    ```
