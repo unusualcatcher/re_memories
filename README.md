@@ -31,6 +31,7 @@ To get started with Re:Memories, follow the instructions below.
    ```
    python -m venv venv
    source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+   cd re_memories/
    ```
 4. Install the required packages using ```pip install -r requirements.txt```
 5. Run the database migrations using ```python manage.py migrate```
